@@ -26,4 +26,9 @@
     <hr>
     <p>Loyer : {{ gareLoyer }}</p>
 
+    <h2>Plateau :</h2>
+    {% for case in cases %}
+        <p>Case : {{ case.nom }}</p>
+    {% endfor %}
+
 {% endblock %}
