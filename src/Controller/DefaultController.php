@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\CasePlateau;
+use App\Entity\Joueur;
 use App\Entity\Plateau;
 use App\Entity\ProprieteFactory;
+use App\Repository\JoueurRepository;
 use App\Service\Banque;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,17 +16,21 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefaultController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
+    private ProprieteFactory $proprieteFactory;
+    private JoueurRepository $joueurRepository;
 
-    public function __construct(EntityManagerInterface $entityManager,ProprieteFactory $proprieteFactory)
+    public function __construct(EntityManagerInterface $entityManager, ProprieteFactory $proprieteFactory, JoueurRepository $joueurRepository)
     {
         $this->entityManager = $entityManager;
         $this->proprieteFactory = $proprieteFactory;
-
+        $this->joueurRepository = $joueurRepository;
     }
 
     #[Route("/", name: "default")]
     public function index(): Response
     {
+
+
         ///Partie 1
         $banque = Banque::getInstance();
         $banque->ajouterArgent(100);
@@ -74,6 +80,21 @@ class DefaultController extends AbstractController
         // Obtenez les cas du plateau
         $cases = $plateau->getCases();
 
+        /// Partie 4
+        // Créer un joueur
+        $joueur = new Joueur();
+        $joueur->setNom('John Doe');
+        $joueur->setArgent(200);
+
+        // Persister l'entité joueur
+        $this->entityManager->persist($joueur);
+        $this->entityManager->flush();
+
+
+        // Récupérer tous les joueurs
+        $joueurs = $this->joueurRepository->findAll();
+
+
         return $this->render('default/index.html.twig', [
             'solde' => $solde,
 
@@ -88,6 +109,8 @@ class DefaultController extends AbstractController
             'gareLoyer' => $gare->getLoyer(),
 
             'cases' => $cases,
+
+            'joueurs' => $joueurs,
         ]);
     }
 }

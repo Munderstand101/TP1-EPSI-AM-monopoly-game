@@ -31,4 +31,10 @@
         <p>Case : {{ case.nom }}</p>
     {% endfor %}
 
+    <h2>Les joueurs :</h2>
+    {% for joueur in joueurs %}
+        <p>Joueur : {{ joueur.nom }}</p>
+        <p>Argent : {{ joueur.argent }}</p>
+    {% endfor %}
+
 {% endblock %}
