@@ -80,11 +80,13 @@ class DefaultController extends AbstractController
         // Obtenez les cas du plateau
         $cases = $plateau->getCases();
 
-        /// Partie 4
+        /// Partie 4 et 5 ...
         // Créer un joueur
         $joueur = new Joueur();
         $joueur->setNom('John Doe');
         $joueur->setArgent(200);
+
+
 
         // Persister l'entité joueur
         $this->entityManager->persist($joueur);
